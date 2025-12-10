@@ -274,6 +274,30 @@ curl http://localhost:8317/v1/chat/completions \
 
 ## Scripts Reference
 
+### `start-cliproxyapi.ps1`
+
+Server manager - start, stop, and monitor.
+
+```powershell
+# Start server (foreground)
+.\start-cliproxyapi.ps1
+
+# Start in background
+.\start-cliproxyapi.ps1 -Background
+
+# Check status
+.\start-cliproxyapi.ps1 -Status
+
+# Stop server
+.\start-cliproxyapi.ps1 -Stop
+
+# Restart
+.\start-cliproxyapi.ps1 -Restart
+
+# View logs
+.\start-cliproxyapi.ps1 -Logs
+```
+
 ### `install-cliproxyapi.ps1`
 
 Full installation script.
