@@ -26,7 +26,7 @@ $BINARY = "$env:USERPROFILE\bin\cliproxyapi-plus.exe"
 $CONFIG = "$env:USERPROFILE\.cli-proxy-api\config.yaml"
 $LOG_DIR = "$env:USERPROFILE\.cli-proxy-api\logs"
 $PORT = 8317
-$PROCESS_NAME = "cliproxyapi-plus"
+$PROCESS_NAMES = @("cliproxyapi-plus", "cli-proxy-api")
 
 function Write-Step { param($msg) Write-Host "[*] $msg" -ForegroundColor Cyan }
 function Write-Success { param($msg) Write-Host "[+] $msg" -ForegroundColor Green }
@@ -34,7 +34,11 @@ function Write-Warning { param($msg) Write-Host "[!] $msg" -ForegroundColor Yell
 function Write-Error { param($msg) Write-Host "[-] $msg" -ForegroundColor Red }
 
 function Get-ServerProcess {
-    Get-Process -Name $PROCESS_NAME -ErrorAction SilentlyContinue
+    foreach ($name in $PROCESS_NAMES) {
+        $proc = Get-Process -Name $name -ErrorAction SilentlyContinue
+        if ($proc) { return $proc }
+    }
+    return $null
 }
 
 function Test-PortInUse {
