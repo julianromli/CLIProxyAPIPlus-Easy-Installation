@@ -182,10 +182,17 @@ cat << EOF
 EOF
 echo -e "${NC}"
 
-# Start server based on what's available
+# Start server with API backend
+API_SERVER="$HOME/.local/bin/cliproxyapi-api-server"
 if command -v python3 &> /dev/null; then
-    cd "$GUI_DIR"
-    python3 -m http.server "$GUI_PORT" 2>/dev/null
+    if [ -f "$API_SERVER" ]; then
+        # Use Python API server with management endpoints
+        python3 "$API_SERVER" 2>/dev/null
+    else
+        # Fallback to simple HTTP server
+        cd "$GUI_DIR"
+        python3 -m http.server "$GUI_PORT" 2>/dev/null
+    fi
 elif command -v python &> /dev/null; then
     cd "$GUI_DIR"
     python -m SimpleHTTPServer "$GUI_PORT" 2>/dev/null
