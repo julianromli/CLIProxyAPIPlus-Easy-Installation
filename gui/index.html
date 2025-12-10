@@ -142,45 +142,58 @@
         .stat-card.success .stat-value { color: var(--success); }
         .stat-card.warning .stat-value { color: var(--warning); }
 
-        /* Version Badge with Update */
-        .version-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .version {
-            font-family: 'Geist Mono', monospace;
-            font-size: 12px;
-            color: var(--text-3);
-            padding: 4px 8px;
-            background: var(--bg-2);
-            border-radius: var(--radius-sm);
+        /* Linear-style Update Button */
+        .update-btn {
+            padding: 8px 16px;
+            background: #8B5CF6;
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: 'Geist', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all var(--transition);
-            border: 1px solid transparent;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            outline: none;
         }
 
-        .version:hover {
-            background: var(--bg-3);
-            border-color: var(--border);
+        .update-btn:hover {
+            background: #7C3AED;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+            transform: translateY(-1px);
         }
 
-        .version.update-available {
-            background: var(--accent-subtle);
-            color: var(--accent);
-            border-color: var(--accent);
+        .update-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        .version.update-available::after {
-            content: ' •';
-            color: var(--accent);
-            animation: pulse 1.5s infinite;
+        /* Update Available State */
+        .update-btn.update-available {
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.1),
+                0 0 0 2px rgba(139, 92, 246, 0.2);
+            animation: pulse-ring 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .update-btn.update-available:hover {
+            box-shadow: 
+                0 2px 4px rgba(139, 92, 246, 0.3),
+                0 0 0 2px rgba(139, 92, 246, 0.3);
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% {
+                box-shadow: 
+                    0 1px 2px rgba(0, 0, 0, 0.1),
+                    0 0 0 2px rgba(139, 92, 246, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    0 1px 2px rgba(0, 0, 0, 0.1),
+                    0 0 0 2px rgba(139, 92, 246, 0.4);
+            }
         }
 
         /* Update Modal */
@@ -392,45 +405,58 @@
         .stat-card.success .stat-value { color: var(--success); }
         .stat-card.warning .stat-value { color: var(--warning); }
 
-        /* Version Badge with Update */
-        .version-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .version {
-            font-family: 'Geist Mono', monospace;
-            font-size: 12px;
-            color: var(--text-3);
-            padding: 4px 8px;
-            background: var(--bg-2);
-            border-radius: var(--radius-sm);
+        /* Linear-style Update Button */
+        .update-btn {
+            padding: 8px 16px;
+            background: #8B5CF6;
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: 'Geist', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all var(--transition);
-            border: 1px solid transparent;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            outline: none;
         }
 
-        .version:hover {
-            background: var(--bg-3);
-            border-color: var(--border);
+        .update-btn:hover {
+            background: #7C3AED;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+            transform: translateY(-1px);
         }
 
-        .version.update-available {
-            background: var(--accent-subtle);
-            color: var(--accent);
-            border-color: var(--accent);
+        .update-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        .version.update-available::after {
-            content: ' •';
-            color: var(--accent);
-            animation: pulse 1.5s infinite;
+        /* Update Available State */
+        .update-btn.update-available {
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.1),
+                0 0 0 2px rgba(139, 92, 246, 0.2);
+            animation: pulse-ring 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .update-btn.update-available:hover {
+            box-shadow: 
+                0 2px 4px rgba(139, 92, 246, 0.3),
+                0 0 0 2px rgba(139, 92, 246, 0.3);
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% {
+                box-shadow: 
+                    0 1px 2px rgba(0, 0, 0, 0.1),
+                    0 0 0 2px rgba(139, 92, 246, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    0 1px 2px rgba(0, 0, 0, 0.1),
+                    0 0 0 2px rgba(139, 92, 246, 0.4);
+            }
         }
 
         /* Update Modal */
@@ -1198,7 +1224,7 @@
                     <input type="checkbox" id="autoStartToggle" onchange="toggleAutoStart()">
                     <span>Auto-start</span>
                 </label>
-                <span class="version" id="versionBadge" onclick="openUpdateModal()" title="Click to check for updates">v1.1.0</span>
+                <button class="update-btn" id="versionBadge" onclick="openUpdateModal()">Update</button>
             </div>
         </header>
 
@@ -1849,7 +1875,6 @@
                     showToast('Update applied! Please restart the GUI.');
                     closeUpdateModal();
                     document.getElementById('versionBadge').classList.remove('update-available');
-                    document.getElementById('versionBadge').textContent = updateInfo.latestVersion;
                 } else {
                     log(`Update failed: ${data.error}`, 'error');
                     showToast(data.error);
