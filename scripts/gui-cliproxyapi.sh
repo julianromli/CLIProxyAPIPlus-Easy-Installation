@@ -144,7 +144,6 @@ update-cliproxyapi --use-prebuilt
 </body>
 </html>
 EOFHTML
-    GUI_HTML="$TMP_GUI"
 fi
 
 # Check if port is available
@@ -185,10 +184,10 @@ echo -e "${NC}"
 
 # Start server based on what's available
 if command -v python3 &> /dev/null; then
-    cd "$(dirname "$GUI_HTML")"
+    cd "$GUI_DIR"
     python3 -m http.server "$GUI_PORT" 2>/dev/null
 elif command -v python &> /dev/null; then
-    cd "$(dirname "$GUI_HTML")"
+    cd "$GUI_DIR"
     python -m SimpleHTTPServer "$GUI_PORT" 2>/dev/null
 else
     echo_error "No HTTP server available (python/python3 required)"
