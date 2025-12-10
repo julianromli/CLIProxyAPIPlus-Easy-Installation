@@ -174,10 +174,86 @@ function Get-AuthStatus {
     foreach ($provider in $authPatterns.Keys) {
         $pattern = Join-Path $CONFIG_DIR $authPatterns[$provider]
         $files = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue
-        $status[$provider] = ($null -ne $files -and $files.Count -gt 0)
+        
+        if ($null -ne $files -and $files.Count -gt 0) {
+            # Try to read expiry from token file
+            $latestFile = $files | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            $expiresIn = $null
+            $expired = $false
+            
+            try {
+                $tokenData = Get-Content $latestFile.FullName -Raw | ConvertFrom-Json
+                
+                # Check various expiry fields
+                $expiryTime = $null
+                if ($tokenData.expires_at) {
+                    $expiryTime = [DateTime]::Parse($tokenData.expires_at)
+                } elseif ($tokenData.expiry) {
+                    $expiryTime = [DateTime]::Parse($tokenData.expiry)
+                } elseif ($tokenData.expires_in -and $latestFile.LastWriteTime) {
+                    $expiryTime = $latestFile.LastWriteTime.AddSeconds($tokenData.expires_in)
+                }
+                
+                if ($expiryTime) {
+                    $diff = ($expiryTime - (Get-Date)).TotalSeconds
+                    if ($diff -le 0) {
+                        $expired = $true
+                        $expiresIn = 0
+                    } else {
+                        $expiresIn = [math]::Floor($diff)
+                    }
+                }
+            } catch {
+                # Ignore parse errors
+            }
+            
+            $status[$provider] = @{
+                loggedIn = $true
+                expiresIn = $expiresIn
+                expired = $expired
+            }
+        } else {
+            $status[$provider] = @{
+                loggedIn = $false
+                expiresIn = $null
+                expired = $false
+            }
+        }
     }
     
     return $status
+}
+
+function Get-ConfigContent {
+    $configPath = "$env:USERPROFILE\.cli-proxy-api\config.yaml"
+    if (-not (Test-Path $configPath)) {
+        return @{ success = $false; error = "Config file not found at: $configPath"; content = "" }
+    }
+    
+    try {
+        $content = [System.IO.File]::ReadAllText($configPath)
+        return @{ success = $true; content = $content }
+    } catch {
+        return @{ success = $false; error = $_.Exception.Message; content = "" }
+    }
+}
+
+function Set-ConfigContent {
+    param([string]$Content)
+    
+    try {
+        # Create backup
+        $backupPath = "$CONFIG.bak"
+        if (Test-Path $CONFIG) {
+            Copy-Item -Path $CONFIG -Destination $backupPath -Force
+        }
+        
+        # Write new content
+        $Content | Out-File -FilePath $CONFIG -Encoding UTF8 -Force
+        return @{ success = $true; message = "Config saved" }
+    } catch {
+        return @{ success = $false; error = $_.Exception.Message }
+    }
 }
 
 function Get-AvailableModels {
@@ -311,6 +387,27 @@ try {
                 "^/api/models$" {
                     $models = Get-AvailableModels
                     Send-JsonResponse -Context $context -Data $models
+                }
+                "^/api/config$" {
+                    if ($method -eq "GET") {
+                        $config = Get-ConfigContent
+                        Send-JsonResponse -Context $context -Data $config
+                    } elseif ($method -eq "POST") {
+                        # Read request body
+                        $reader = New-Object System.IO.StreamReader($request.InputStream)
+                        $body = $reader.ReadToEnd()
+                        $reader.Close()
+                        
+                        try {
+                            $data = $body | ConvertFrom-Json
+                            $result = Set-ConfigContent -Content $data.content
+                            Send-JsonResponse -Context $context -Data $result
+                        } catch {
+                            Send-JsonResponse -Context $context -Data @{ success = $false; error = "Invalid JSON" } -StatusCode 400
+                        }
+                    } else {
+                        Send-JsonResponse -Context $context -Data @{ error = "Method not allowed" } -StatusCode 405
+                    }
                 }
                 "^/api/start$" {
                     if ($method -eq "POST") {

@@ -181,11 +181,16 @@
             border-radius: var(--radius);
             padding: 14px 16px;
             transition: all var(--transition);
+            position: relative;
         }
 
         .metric:hover {
             border-color: var(--border-hover);
             background: var(--bg-3);
+        }
+
+        .metric:hover .copy-btn {
+            opacity: 1;
         }
 
         .metric-label {
@@ -201,6 +206,34 @@
             font-family: 'Geist Mono', monospace;
             font-size: 13px;
             color: var(--text-1);
+        }
+
+        /* Copy button */
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: var(--text-3);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            opacity: 0;
+        }
+
+        .copy-btn:hover {
+            background: var(--bg-3);
+            color: var(--text-1);
+        }
+
+        .copy-btn.copied {
+            color: var(--success);
         }
 
         /* Controls */
@@ -350,6 +383,50 @@
 
         .provider.connected .provider-name {
             color: var(--success);
+        }
+
+        .provider.expiring {
+            border-color: var(--warning);
+            background: var(--warning-subtle);
+        }
+
+        .provider.expiring .provider-name {
+            color: var(--warning);
+        }
+
+        .provider.expiring .provider-icon svg {
+            fill: var(--warning);
+        }
+
+        .provider.expired {
+            border-color: var(--error);
+            background: var(--error-subtle);
+        }
+
+        .provider.expired .provider-name {
+            color: var(--error);
+        }
+
+        .provider.expired .provider-icon svg {
+            fill: var(--error);
+        }
+
+        .provider-expiry {
+            font-size: 9px;
+            color: var(--text-3);
+            margin-top: 2px;
+        }
+
+        .provider.connected .provider-expiry {
+            color: var(--success);
+        }
+
+        .provider.expiring .provider-expiry {
+            color: var(--warning);
+        }
+
+        .provider.expired .provider-expiry {
+            color: var(--error);
         }
 
         /* Models List */
@@ -566,6 +643,151 @@
         .delay-2 { animation-delay: 100ms; }
         .delay-3 { animation-delay: 150ms; }
         .delay-4 { animation-delay: 200ms; }
+
+        /* Auto-start toggle */
+        .auto-start {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-3);
+        }
+
+        .auto-start input[type="checkbox"] {
+            appearance: none;
+            width: 36px;
+            height: 20px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: all var(--transition);
+        }
+
+        .auto-start input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: var(--text-3);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all var(--transition);
+        }
+
+        .auto-start input[type="checkbox"]:checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .auto-start input[type="checkbox"]:checked::before {
+            background: white;
+            left: 18px;
+        }
+
+        /* Settings Section */
+        .settings-section {
+            margin-bottom: 40px;
+        }
+
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .settings-toggle:hover {
+            background: var(--bg-3);
+            border-color: var(--border-hover);
+        }
+
+        .settings-toggle-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-toggle-icon {
+            font-size: 14px;
+            color: var(--text-2);
+        }
+
+        .settings-toggle-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-2);
+        }
+
+        .settings-toggle-arrow {
+            color: var(--text-3);
+            font-size: 12px;
+            transition: transform var(--transition);
+        }
+
+        .settings-toggle.open .settings-toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .settings-content {
+            display: none;
+            margin-top: 8px;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .settings-content.open {
+            display: block;
+        }
+
+        .config-editor {
+            font-family: 'Geist Mono', monospace;
+            font-size: 12px;
+            background: var(--bg-1);
+            color: var(--text-1);
+            border: none;
+            width: 100%;
+            min-height: 200px;
+            padding: 16px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .config-editor:focus {
+            background: var(--bg-0);
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .settings-actions .btn {
+            flex: none;
+            padding: 8px 16px;
+        }
+
+        .config-status {
+            flex: 1;
+            font-size: 12px;
+            color: var(--text-3);
+            display: flex;
+            align-items: center;
+        }
+
+        .config-status.success { color: var(--success); }
+        .config-status.error { color: var(--error); }
     </style>
 </head>
 <body>
@@ -577,7 +799,13 @@
                 <div class="logo-icon">⚡</div>
                 <span class="logo-text">CLIProxyAPI+</span>
             </div>
-            <span class="version">v1.0</span>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <label class="auto-start">
+                    <input type="checkbox" id="autoStartToggle" onchange="toggleAutoStart()">
+                    <span>Auto-start</span>
+                </label>
+                <span class="version">v1.0</span>
+            </div>
         </header>
 
         <section class="status-section animate-in delay-1">
@@ -592,6 +820,12 @@
             <div class="metric">
                 <div class="metric-label">Endpoint</div>
                 <div class="metric-value" id="endpoint">localhost:8317</div>
+                <button class="copy-btn" onclick="copyEndpoint()" title="Copy endpoint">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
             </div>
             <div class="metric">
                 <div class="metric-label">Process ID</div>
@@ -676,6 +910,24 @@
             </div>
         </section>
 
+        <section class="settings-section animate-in delay-4">
+            <div class="settings-toggle" onclick="toggleSettings()">
+                <div class="settings-toggle-left">
+                    <span class="settings-toggle-icon">⚙</span>
+                    <span class="settings-toggle-text">Configuration</span>
+                </div>
+                <span class="settings-toggle-arrow">▼</span>
+            </div>
+            <div class="settings-content" id="settingsContent">
+                <textarea class="config-editor" id="configEditor" spellcheck="false" placeholder="Loading configuration..."></textarea>
+                <div class="settings-actions">
+                    <div class="config-status" id="configStatus"></div>
+                    <button class="btn" onclick="reloadConfig()">Reload</button>
+                    <button class="btn btn-primary" onclick="saveConfig()">Save & Restart</button>
+                </div>
+            </div>
+        </section>
+
         <section class="animate-in delay-4">
             <div class="section-header">Activity</div>
             <div class="activity">
@@ -713,6 +965,7 @@
 
     <script>
         let serverStartTime = null;
+        let autoStartEnabled = localStorage.getItem('autoStart') === 'true';
 
         function log(message, type = 'info') {
             const content = document.getElementById('activityContent');
@@ -825,6 +1078,95 @@
             return false;
         }
 
+        function copyEndpoint() {
+            const endpoint = 'http://localhost:8317/v1';
+            navigator.clipboard.writeText(endpoint).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.classList.add('copied');
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                showToast('Endpoint copied to clipboard');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                }, 2000);
+            });
+        }
+
+        function toggleAutoStart() {
+            const checkbox = document.getElementById('autoStartToggle');
+            autoStartEnabled = checkbox.checked;
+            localStorage.setItem('autoStart', autoStartEnabled);
+            log(autoStartEnabled ? 'Auto-start enabled' : 'Auto-start disabled', 'info');
+        }
+
+        function toggleSettings() {
+            const toggle = document.querySelector('.settings-toggle');
+            const content = document.getElementById('settingsContent');
+            toggle.classList.toggle('open');
+            content.classList.toggle('open');
+            
+            if (content.classList.contains('open')) {
+                loadConfig();
+            }
+        }
+
+        async function loadConfig() {
+            try {
+                const res = await fetch('/api/config');
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('configEditor').value = data.content || '';
+                    setConfigStatus('', '');
+                } else {
+                    setConfigStatus('Failed to load config', 'error');
+                }
+            } catch (e) {
+                setConfigStatus('Error: ' + e.message, 'error');
+            }
+        }
+
+        function reloadConfig() {
+            loadConfig();
+            log('Config reloaded', 'info');
+        }
+
+        async function saveConfig() {
+            const content = document.getElementById('configEditor').value;
+            setConfigStatus('Saving...', '');
+            
+            try {
+                const res = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    setConfigStatus('Saved!', 'success');
+                    log('Config saved', 'success');
+                    
+                    // Restart if server was running
+                    const status = await checkStatus();
+                    if (status) {
+                        log('Restarting server...', 'info');
+                        await restartServer();
+                    }
+                } else {
+                    setConfigStatus('Error: ' + data.error, 'error');
+                    log('Config save failed: ' + data.error, 'error');
+                }
+            } catch (e) {
+                setConfigStatus('Error: ' + e.message, 'error');
+            }
+        }
+
+        function setConfigStatus(msg, type) {
+            const el = document.getElementById('configStatus');
+            el.textContent = msg;
+            el.className = 'config-status ' + type;
+        }
+
         async function checkAuthStatus() {
             try {
                 const res = await fetch('/api/auth-status');
@@ -834,10 +1176,38 @@
                     providers.forEach(provider => {
                         const el = document.getElementById(`provider-${provider}`);
                         if (el) {
-                            if (authStatus[provider]) {
-                                el.classList.add('connected');
+                            // Reset classes
+                            el.classList.remove('connected', 'expiring', 'expired');
+                            
+                            // Get or create expiry element
+                            let expiryEl = el.querySelector('.provider-expiry');
+                            if (!expiryEl) {
+                                expiryEl = document.createElement('div');
+                                expiryEl.className = 'provider-expiry';
+                                el.appendChild(expiryEl);
+                            }
+                            
+                            const info = authStatus[provider];
+                            if (info && info.loggedIn) {
+                                if (info.expired) {
+                                    el.classList.add('expired');
+                                    expiryEl.textContent = 'Expired';
+                                } else if (info.expiresIn && info.expiresIn < 86400) {
+                                    // Less than 24h
+                                    el.classList.add('expiring');
+                                    const hours = Math.floor(info.expiresIn / 3600);
+                                    expiryEl.textContent = hours > 0 ? `${hours}h left` : 'Expiring soon';
+                                } else {
+                                    el.classList.add('connected');
+                                    if (info.expiresIn) {
+                                        const days = Math.floor(info.expiresIn / 86400);
+                                        expiryEl.textContent = days > 0 ? `${days}d left` : 'Valid';
+                                    } else {
+                                        expiryEl.textContent = 'Active';
+                                    }
+                                }
                             } else {
-                                el.classList.remove('connected');
+                                expiryEl.textContent = '';
                             }
                         }
                     });
@@ -980,10 +1350,20 @@
         });
 
         // Init
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Set auto-start checkbox
+            document.getElementById('autoStartToggle').checked = autoStartEnabled;
+            
             log('Control Center ready', 'success');
-            checkStatus();
-            checkAuthStatus();
+            const running = await checkStatus();
+            await checkAuthStatus();
+            
+            // Auto-start if enabled and server not running
+            if (autoStartEnabled && !running) {
+                log('Auto-starting server...', 'info');
+                await startServer();
+            }
+            
             setInterval(checkStatus, 5000);
             setInterval(checkAuthStatus, 10000);
         });
