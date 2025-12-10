@@ -108,11 +108,93 @@ gui-cliproxyapi
 ```
 
 **Script yang Tersedia:**
+
 - `start-cliproxyapi` - Start/stop/restart server
 - `cliproxyapi-oauth` - Login ke OAuth provider
 - `gui-cliproxyapi` - Buka GUI Control Center
 - `update-cliproxyapi` - Update ke versi terbaru
 - `uninstall-cliproxyapi` - Hapus semuanya
+
+---
+
+## Quick Start (Linux/macOS)
+
+### Prasyarat
+
+- **Git** - Biasanya sudah terinstall, atau install dengan `sudo apt install git` (Ubuntu) / `brew install git` (macOS)
+- **Go 1.21+** (opsional, untuk build dari source) - [Download](https://go.dev/dl/)
+- **curl** atau **wget** - Biasanya sudah terinstall
+
+### Instalasi
+
+```bash
+# Clone repo ini
+git clone https://github.com/julianromli/CLIProxyAPIPlus-Easy-Installation.git
+cd CLIProxyAPIPlus-Easy-Installation
+
+# Buat script executable dan jalankan installer
+chmod +x scripts/install-cliproxyapi.sh
+./scripts/install-cliproxyapi.sh
+
+# Atau pake binary pre-built (gak perlu Go)
+./scripts/install-cliproxyapi.sh --use-prebuilt
+```
+
+### Setelah Instalasi
+
+Script diinstall ke `~/.local/bin/` dan otomatis ditambahkan ke PATH.
+
+```bash
+# Reload shell config (atau buka terminal baru)
+source ~/.bashrc  # atau ~/.zshrc kalau pake zsh
+
+# Start server di background
+start-cliproxyapi --background
+
+# Login ke provider
+cliproxyapi-oauth --all
+
+# Buka GUI Control Center (kontrol penuh via browser)
+gui-cliproxyapi
+```
+
+**Script yang Tersedia:**
+
+- `start-cliproxyapi` - Start/stop/restart server
+- `cliproxyapi-oauth` - Login ke OAuth provider
+- `gui-cliproxyapi` - Buka GUI Control Center
+- `update-cliproxyapi` - Update ke versi terbaru
+- `uninstall-cliproxyapi` - Hapus semuanya
+
+### Testing Instalasi
+
+Setelah instalasi, cek apakah semuanya berjalan:
+
+```bash
+# 1. Cek status server
+start-cliproxyapi --status
+
+# 2. Test endpoint API
+curl -H "Authorization: Bearer sk-dummy" http://localhost:8317/v1/models
+
+# 3. Test chat completion
+curl http://localhost:8317/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-dummy" \
+  -d '{
+    "model": "gemini-2.5-pro",
+    "messages": [{"role": "user", "content": "Halo!"}]
+  }'
+
+# 4. Lihat log server
+start-cliproxyapi --logs
+```
+
+Hasil yang diharapkan:
+
+- `/v1/models` mengembalikan daftar model
+- Chat completion mengembalikan respon AI
+- Log menunjukkan API call berhasil
 
 ---
 
@@ -143,8 +225,9 @@ gui-cliproxyapi
 
 Set environment variable sebelum running:
 
+**Windows (PowerShell):**
+
 ```powershell
-# PowerShell
 $env:ANTHROPIC_BASE_URL = "http://localhost:8317/v1"
 $env:ANTHROPIC_API_KEY = "sk-dummy"
 claude
@@ -158,6 +241,24 @@ Untuk config permanen, tambahkan ke PowerShell profile (`$PROFILE`):
 ```powershell
 $env:ANTHROPIC_BASE_URL = "http://localhost:8317/v1"
 $env:ANTHROPIC_API_KEY = "sk-dummy"
+```
+
+**Linux/macOS (Bash/Zsh):**
+
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:8317/v1"
+export ANTHROPIC_API_KEY="sk-dummy"
+claude
+
+# Atau dalam satu baris
+ANTHROPIC_BASE_URL="http://localhost:8317/v1" ANTHROPIC_API_KEY="sk-dummy" claude
+```
+
+Untuk config permanen, tambahkan ke `~/.bashrc` atau `~/.zshrc`:
+
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:8317/v1"
+export ANTHROPIC_API_KEY="sk-dummy"
 ```
 
 ### OpenCode
@@ -201,7 +302,7 @@ Edit `~/.continue/config.json`:
     },
     {
       "title": "CLIProxy - Claude",
-      "provider": "openai", 
+      "provider": "openai",
       "model": "claude-opus-4.5",
       "apiKey": "sk-dummy",
       "apiBase": "http://localhost:8317/v1"
@@ -244,6 +345,7 @@ curl http://localhost:8317/v1/chat/completions \
 ## Model yang Tersedia
 
 ### Provider Antigravity
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `gemini-claude-opus-4-5-thinking` | Claude Opus 4.5 dengan extended thinking |
@@ -253,6 +355,7 @@ curl http://localhost:8317/v1/chat/completions \
 | `gpt-oss-120b-medium` | GPT OSS 120B |
 
 ### Provider GitHub Copilot
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `claude-opus-4.5` | Claude Opus 4.5 |
@@ -260,28 +363,33 @@ curl http://localhost:8317/v1/chat/completions \
 | `grok-code-fast-1` | Grok Code Fast |
 
 ### Provider Gemini CLI
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `gemini-2.5-pro` | Gemini 2.5 Pro |
 | `gemini-3-pro-preview` | Gemini 3 Pro Preview |
 
 ### Provider Codex
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `gpt-5.1-codex-max` | GPT-5.1 Codex Max |
 
 ### Provider Qwen
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `qwen3-coder-plus` | Qwen3 Coder Plus |
 
 ### Provider iFlow
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `glm-4.6` | GLM 4.6 |
 | `minimax-m2` | Minimax M2 |
 
 ### Provider Kiro (AWS)
+
 | Model ID | Deskripsi |
 |----------|-----------|
 | `kiro-claude-opus-4.5` | Claude Opus 4.5 via Kiro |
@@ -396,6 +504,7 @@ gui-cliproxyapi.ps1 -NoBrowser
 ```
 
 **Fitur:**
+
 - Monitoring status server real-time
 - Tombol Start/Stop/Restart (beneran jalan!)
 - Tombol OAuth login untuk semua provider
@@ -474,6 +583,7 @@ MIT License - Lihat file [LICENSE](LICENSE).
 ## Kontribusi
 
 PR welcome! Silakan:
+
 - Tambah dukungan untuk CLI tool lain
 - Perbaiki dokumentasi
 - Laporkan bug

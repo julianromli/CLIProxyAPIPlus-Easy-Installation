@@ -108,11 +108,93 @@ gui-cliproxyapi
 ```
 
 **Available Scripts:**
+
 - `start-cliproxyapi` - Start/stop/restart server
 - `cliproxyapi-oauth` - Login to OAuth providers
 - `gui-cliproxyapi` - Open GUI Control Center
 - `update-cliproxyapi` - Update to latest version
 - `uninstall-cliproxyapi` - Remove everything
+
+---
+
+## Quick Start (Linux/macOS)
+
+### Prerequisites
+
+- **Git** - Usually pre-installed, or install with `sudo apt install git` (Ubuntu) / `brew install git` (macOS)
+- **Go 1.21+** (optional, for building from source) - [Download](https://go.dev/dl/)
+- **curl** or **wget** - Usually pre-installed
+
+### Installation
+
+```bash
+# Clone this repo
+git clone https://github.com/julianromli/CLIProxyAPIPlus-Easy-Installation.git
+cd CLIProxyAPIPlus-Easy-Installation
+
+# Make script executable and run installer
+chmod +x scripts/install-cliproxyapi.sh
+./scripts/install-cliproxyapi.sh
+
+# Or use pre-built binary (no Go required)
+./scripts/install-cliproxyapi.sh --use-prebuilt
+```
+
+### After Installation
+
+Scripts are installed to `~/.local/bin/` and added to PATH automatically.
+
+```bash
+# Reload shell config (or open new terminal)
+source ~/.bashrc  # or ~/.zshrc if using zsh
+
+# Start server in background
+start-cliproxyapi --background
+
+# Login to providers
+cliproxyapi-oauth --all
+
+# Open GUI Control Center (full control via browser)
+gui-cliproxyapi
+```
+
+**Available Scripts:**
+
+- `start-cliproxyapi` - Start/stop/restart server
+- `cliproxyapi-oauth` - Login to OAuth providers
+- `gui-cliproxyapi` - Open GUI Control Center
+- `update-cliproxyapi` - Update to latest version
+- `uninstall-cliproxyapi` - Remove everything
+
+### Testing the Installation
+
+After installation, test if everything works:
+
+```bash
+# 1. Check server status
+start-cliproxyapi --status
+
+# 2. Test API endpoint
+curl -H "Authorization: Bearer sk-dummy" http://localhost:8317/v1/models
+
+# 3. Test chat completion
+curl http://localhost:8317/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-dummy" \
+  -d '{
+    "model": "gemini-2.5-pro",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+
+# 4. View server logs
+start-cliproxyapi --logs
+```
+
+Expected results:
+
+- `/v1/models` returns list of available models
+- Chat completion returns AI response
+- Logs show successful API calls
 
 ---
 
@@ -143,8 +225,9 @@ gui-cliproxyapi
 
 Set environment variables before running:
 
+**Windows (PowerShell):**
+
 ```powershell
-# PowerShell
 $env:ANTHROPIC_BASE_URL = "http://localhost:8317/v1"
 $env:ANTHROPIC_API_KEY = "sk-dummy"
 claude
@@ -158,6 +241,24 @@ For persistent config, add to your PowerShell profile (`$PROFILE`):
 ```powershell
 $env:ANTHROPIC_BASE_URL = "http://localhost:8317/v1"
 $env:ANTHROPIC_API_KEY = "sk-dummy"
+```
+
+**Linux/macOS (Bash/Zsh):**
+
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:8317/v1"
+export ANTHROPIC_API_KEY="sk-dummy"
+claude
+
+# Or in one line
+ANTHROPIC_BASE_URL="http://localhost:8317/v1" ANTHROPIC_API_KEY="sk-dummy" claude
+```
+
+For persistent config, add to `~/.bashrc` or `~/.zshrc`:
+
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:8317/v1"
+export ANTHROPIC_API_KEY="sk-dummy"
 ```
 
 ### OpenCode
@@ -201,7 +302,7 @@ Edit `~/.continue/config.json`:
     },
     {
       "title": "CLIProxy - Claude",
-      "provider": "openai", 
+      "provider": "openai",
       "model": "claude-opus-4.5",
       "apiKey": "sk-dummy",
       "apiBase": "http://localhost:8317/v1"
@@ -244,6 +345,7 @@ curl http://localhost:8317/v1/chat/completions \
 ## Available Models
 
 ### Antigravity Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `gemini-claude-opus-4-5-thinking` | Claude Opus 4.5 with extended thinking |
@@ -253,6 +355,7 @@ curl http://localhost:8317/v1/chat/completions \
 | `gpt-oss-120b-medium` | GPT OSS 120B |
 
 ### GitHub Copilot Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `claude-opus-4.5` | Claude Opus 4.5 |
@@ -260,28 +363,33 @@ curl http://localhost:8317/v1/chat/completions \
 | `grok-code-fast-1` | Grok Code Fast |
 
 ### Gemini CLI Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `gemini-2.5-pro` | Gemini 2.5 Pro |
 | `gemini-3-pro-preview` | Gemini 3 Pro Preview |
 
 ### Codex Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `gpt-5.1-codex-max` | GPT-5.1 Codex Max |
 
 ### Qwen Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `qwen3-coder-plus` | Qwen3 Coder Plus |
 
 ### iFlow Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `glm-4.6` | GLM 4.6 |
 | `minimax-m2` | Minimax M2 |
 
 ### Kiro (AWS) Provider
+
 | Model ID | Description |
 |----------|-------------|
 | `kiro-claude-opus-4.5` | Claude Opus 4.5 via Kiro |
@@ -396,6 +504,7 @@ gui-cliproxyapi.ps1 -NoBrowser
 ```
 
 **Features:**
+
 - Real-time server status monitoring
 - Start/Stop/Restart buttons (actually work!)
 - OAuth login buttons for all providers
@@ -474,6 +583,7 @@ MIT License - See [LICENSE](LICENSE) file.
 ## Contributing
 
 PRs welcome! Feel free to:
+
 - Add support for more CLI tools
 - Improve documentation
 - Report bugs
